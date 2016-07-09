@@ -1,0 +1,47 @@
+{
+  "id": "99",
+  "signalTypes": [
+    "click"
+  ],
+  "aggregates": [
+    {
+      "type": "count",
+      "sourceFields": [
+        "id"
+      ],
+      "targetField": "count_d"
+    },
+    {
+      "type": "script",
+      "params": {
+        "aggregateScript": "event.addField('script_d',2.0);result.setField('script_d',2.0);"
+      }
+    },
+    {
+      "type": "sumOfLogs",
+      "sourceFields": [
+        "script_d"
+      ],
+      "targetField": "script_sum_logs_d"
+    },
+    {
+      "type": "collect",
+      "sourceFields": [
+        "id"
+      ],
+      "targetField": "ids_ss"
+    },
+    {
+      "type": "expr",
+      "sourceFields": [
+        "query_s",
+        "filters_s"
+      ],
+      "targetField": "expr_t",
+      "params": {
+        "expr": "v = ''; if (value != null) v = value + ' | '; String(v + query_s + ' & ' + filters_s)"
+      }
+    }
+  ],
+  "timeRange": "[* TO NOW]"
+}
