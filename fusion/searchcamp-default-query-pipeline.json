@@ -1,0 +1,56 @@
+{
+  "id" : "searchcamp-default",
+  "stages" : [ {
+    "type" : "set-params",
+    "id" : "6686yft3g7orlcv7vi",
+    "params" : [ {
+      "key" : "hl",
+      "value" : "on",
+      "policy" : "default"
+    }, {
+      "key" : "hl.fl",
+      "value" : "title",
+      "policy" : "default"
+    } ],
+    "type" : "set-params",
+    "skip" : false,
+    "label" : "set-params"
+  }, {
+    "type" : "search-fields",
+    "id" : "3ed9eae3-8a80-48ad-9205-a53b6ae5e7c9",
+    "rows" : 10,
+    "start" : 0,
+    "queryFields" : [ {
+      "field" : "title",
+      "boost" : 10.0
+    }, {
+      "field" : "abstract",
+      "boost" : 1.0
+    } ],
+    "returnFields" : [ ],
+    "type" : "search-fields",
+    "skip" : false,
+    "label" : "search-fields"
+  }, {
+    "type" : "facet",
+    "id" : "c5322bb5-9464-4936-9af2-b5966732f3fd",
+    "fieldFacets" : [ {
+      "field" : "type",
+      "minCount" : 1,
+      "missing" : false
+    } ],
+    "type" : "facet",
+    "skip" : false,
+    "label" : "facet"
+  }, {
+    "type" : "solr-query",
+    "id" : "f38c6194-e031-41c9-b3e8-3be2067773f2",
+    "allowedRequestHandlers" : [ ],
+    "httpMethod" : "POST",
+    "allowFederatedSearch" : false,
+    "type" : "solr-query",
+    "skip" : false,
+    "label" : "solr-query"
+  } ],
+  "properties" : { }
+}
