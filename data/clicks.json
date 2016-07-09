@@ -1,0 +1,10 @@
+[
+  { "timestamp": "2016-06-01T23:44:52.533Z",
+    "type" : "click",
+    "params" : {
+      "query" : "search",
+      "filterQueries": [],
+      "docId" : "7"
+    }
+  }
+]

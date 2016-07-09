@@ -25,11 +25,15 @@ curl -u $FUSION_API_CREDENTIALS -X PUT -H 'Content-type: application/json' \
 curl -u $FUSION_API_CREDENTIALS -X PUT -H Content-type:application/json -d '{"enabled":true}' ${FUSION_API_BASE}/collections/searchcamp/features/searchLogs
 curl -u $FUSION_API_CREDENTIALS -X PUT -H Content-type:application/json -d '{"enabled":true}' ${FUSION_API_BASE}/collections/searchcamp/features/signals
 
-# searchcamp: set up demo pipeline, incorporating signals and rules
+# searchcamp: set up default and demo pipelines
 curl -u $FUSION_API_CREDENTIALS -X DELETE ${FUSION_API_BASE}/query-pipelines/searchcamp-demo
 curl -u $FUSION_API_CREDENTIALS -X POST -H 'Content-type: application/json' -d @fusion/searchcamp-demo-query-pipeline.json ${FUSION_API_BASE}/query-pipelines
 
-# searchcamp: pull down the rules query pipeline; use when making edits through Fusion UI and need to save
+curl -u $FUSION_API_CREDENTIALS -X DELETE ${FUSION_API_BASE}/query-pipelines/searchcamp-default
+curl -u $FUSION_API_CREDENTIALS -X POST -H 'Content-type: application/json' -d @fusion/searchcamp-default-query-pipeline.json ${FUSION_API_BASE}/query-pipelines
+
+# searchcamp: pull down the default and demo query pipelines; use when making edits through Fusion UI and need to save
+# curl -u $FUSION_API_CREDENTIALS -X GET ${FUSION_API_BASE}/query-pipelines/searchcamp-default > searchcamp-default-query-pipeline.json
 # curl -u $FUSION_API_CREDENTIALS -X GET ${FUSION_API_BASE}/query-pipelines/searchcamp-demo > searchcamp-demo-query-pipeline.json
 
 # aggregation: enable click aggregation
@@ -42,11 +46,11 @@ curl -u $FUSION_API_CREDENTIALS -X PUT -H 'Content-type: application/json' -d '"
 # rules - index some???
 # $FUSION_HOME/apps/solr-dist/bin/post -c searchcamp_rules data/rules.json
 
-$FUSION_HOME/apps/solr-dist/bin/post -c searchcamp -params "rowid=id&f.speakers.split=true" searchcamp.csv
+$FUSION_HOME/apps/solr-dist/bin/post -c searchcamp -params "rowid=id&f.speakers.split=true" data/searchcamp_sessions.csv
 
 
 # Add some fake click data
-#  curl -u $FUSION_API_CREDENTIALS "${FUSION_API_BASE}/signals/searchcamp?commit=true" -X POST -H 'Content-type:application/json' --data-binary @data/fake_clicks.json
+#  curl -u $FUSION_API_CREDENTIALS "${FUSION_API_BASE}/signals/searchcamp?commit=true" -X POST -H 'Content-type:application/json' --data-binary @data/clicks.json
 
 # Run the aggregation (it's id=99 in data/aggregation_definition.json)
 # curl -u $FUSION_API_CREDENTIALS -X POST "${FUSION_API_BASE}/aggregator/jobs/searchcamp_signals/99"
