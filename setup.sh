@@ -4,23 +4,25 @@ export FUSION_API_BASE=http://localhost:8764/api/apollo
 export ZK_HOST=localhost:9983
 export FUSION_API_CREDENTIALS=admin:abcd1234
 
-# rules: create configset (assuming this is already set up, for now)
-# $FUSION_HOME/apps/solr-dist/server/scripts/cloud-scripts/zkcli.sh -zkhost "$ZK_HOST" -cmd upconfig -confname rules -confdir rules_conf/
+# rules: create configset
+$FUSION_HOME/apps/solr-dist/server/scripts/cloud-scripts/zkcli.sh -zkhost "$ZK_HOST" -cmd upconfig -confname rules -confdir solr/rules/
 # rules: pull Solr configuration from ZK; use when editing rules config through Fusion UI and need to pull it back down to save
-# $FUSION_HOME/apps/solr-dist/server/scripts/cloud-scripts/zkcli.sh -zkhost "$ZK_HOST" -cmd downconfig -confname rules -confdir rules_conf/
+# $FUSION_HOME/apps/solr-dist/server/scripts/cloud-scripts/zkcli.sh -zkhost "$ZK_HOST" -cmd downconfig -confname rules -confdir solr/rules/
 
 # searchcamp_rules: create collection (specific to the example products)
 curl -u $FUSION_API_CREDENTIALS -X PUT -H 'Content-type: application/json' \
      -d '{"solrParams":{"replicationFactor":1,"numShards":1, "collection.configName": "rules"}}' \
      ${FUSION_API_BASE}/collections/searchcamp_rules
 
-
+# searchcamp: create configset
+$FUSION_HOME/apps/solr-dist/server/scripts/cloud-scripts/zkcli.sh -zkhost "$ZK_HOST" -cmd upconfig -confname searchcamp -confdir solr/searchcamp/
+# searchcamp: pull Solr configuration from ZK
+# $FUSION_HOME/apps/solr-dist/server/scripts/cloud-scripts/zkcli.sh -zkhost "$ZK_HOST" -cmd downconfig -confname searchcamp -confdir solr/searchcamp/
 
 # searchcamp: create collection
 curl -u $FUSION_API_CREDENTIALS -X PUT -H 'Content-type: application/json' \
-     -d '{"solrParams":{"replicationFactor":1,"numShards":1}}' \
+     -d '{"solrParams":{"replicationFactor":1,"numShards":1, "collection.configName": "searchcamp"}}' \
      ${FUSION_API_BASE}/collections/searchcamp
-
 # searchcamp: enable signals and search logs
 curl -u $FUSION_API_CREDENTIALS -X PUT -H Content-type:application/json -d '{"enabled":true}' ${FUSION_API_BASE}/collections/searchcamp/features/searchLogs
 curl -u $FUSION_API_CREDENTIALS -X PUT -H Content-type:application/json -d '{"enabled":true}' ${FUSION_API_BASE}/collections/searchcamp/features/signals
