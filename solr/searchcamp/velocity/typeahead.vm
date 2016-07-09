@@ -1,0 +1,118 @@
+<html>
+
+<!--
+
+collectionName: ${request.core.coreDescriptor.cloudDescriptor.collectionName}
+coreNodeName: ${request.core.coreDescriptor.cloudDescriptor.coreNodeName}
+shardId: ${request.core.coreDescriptor.cloudDescriptor.shardId}
+
+-->
+
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+
+  ## this works to get jquery too:
+  ##    curl -u $FUSION_API_CREDENTIALS -X GET -H 'Accept: text/plain' http://localhost:8764/api/apollo/collections/searchcamp/solr-config/velocity/jquery-1.7.2.min.js
+  <script type="text/javascript">#include("jquery-1.7.2.min.js")</script>
+
+  <script type="text/javascript">
+      var creds = 'admin:abcd1234';
+      var fusion_host = 'localhost';
+
+      function fusion_url(handler, q, params, profile) {
+        // TODO: should params be a map/associative array instead?  does jquery offer something to handle encoding and such?
+        return 'http://'+fusion_host+':8764/api/apollo/collections/searchcamp/query-profiles/' + profile + handler + '?debug=true&q=' + encodeURI(q) + params;
+      }
+
+      function make_fusion_request(div,q,formParams,profile) {
+        var url = fusion_url('/select',q,formParams,profile);
+
+        var start_time = new Date().getTime();
+
+        $.ajax({
+          headers: {
+            "Authorization": "Basic " + btoa(creds)
+          },
+          type: "GET", async: false, dataType: 'text',
+          url: url,
+
+	      success: function (data) {
+	        var request_time = new Date().getTime() - start_time;
+		    $(div).html(data);
+		    if (profile == 'grouped') { $('#fusion_qtime').html('Full Fusion QTime: ' + request_time); }
+	      }
+	    });
+      }
+
+      function load_fusion_results() {
+	    var q = $('\#q').val();  ## hash in hash-q escaped for velocity rendering (there's a macro for hash-q in techproducts macros)
+
+        make_fusion_request('#results', q, "&wt=velocity&v.template=group_matches&group=on&group.field=type", 'default');
+
+        $('#context_links').html(
+                 // /panels/searchcamp?sp1=(perPage:10,q:canon)&qp1=searchcamp-default&panels=!((component:(data:(),excludeFromHistory:!f,type:sui),history:!(),properties:(displayTitle:Search),puid:%27235307977289.58847%27))
+          '<a href="/panels/searchcamp?sp1=(perPage:10,q:%27' + encodeURI(q) + '%27)&qp1=searchcamp-default&panels=!((component:(data:(),excludeFromHistory:!f,type:sui),history:!(),properties:(displayTitle:Search),puid:%27235307977289.58847%27))">fusion</a> ' +
+          '<a href="' + fusion_url('/browse',q,'','grouped') + '">browse</a> ' +
+          '<a href="' + fusion_url('/select',q,'&wt=json&indent=on','default') + '">json</a> ' +
+          '<a href="' + fusion_url('/select',q,'&wt=xml','default') + '">xml</a> '
+        );
+
+	    return false; // for use with <form> onsubmit
+      }
+
+      $(function() { $('\#q').bind("keyup",load_fusion_results); });
+      $(function() { $('#preprocess_query').bind("change",load_fusion_results); });
+
+      $(function() { load_fusion_results(); });
+
+      function showHoverResults(type,catid,manid,name) {
+        var fq = '';
+        if (type=='brand') {
+          fq = '&fq=manufacturer_id:' + encodeURI(manid);
+        }
+        if (type=='category') {
+          fq = '&fq=category_id:' + encodeURI(catid)
+        }
+
+        var q = name; // default to the querying ignoring the user query and using the suggested value, user query will come into the boost
+        var user_q = $('\#q').val();  ## hash in hash-q escaped for velocity rendering (there's a macro for hash-q in techproducts macros)
+        var bq = '';
+        if (fq != '') {
+          // when a suggestion is really a filter, use the users query for the main query
+   	      q = user_q;
+        } else {
+          bq = "&bq=(" + encodeURI(user_q) + ")";
+        }
+
+        make_fusion_request('#hover', q, "&wt=velocity&v.template=results_list&v.layout=hover_layout&v.layout.enabled=true&fq=type:item&mm=50%25" + fq + bq, 'default');
+      }
+
+    </script>
+
+  <style>
+    em {
+    color: #FF833D;
+    font-weight: bold;
+    }
+
+    .result-document {
+    }
+
+    //      .label { width: 5%; }
+    //      .results { width: 75%; }
+  </style>
+</head>
+
+<body>
+
+<form> <!-- onsubmit="load_fusion_results(); return false;" action="" -->
+  <input type="text" id="q" name="q" autocomplete="off" value="#if($request.params.orig_q)$!esc.html($request.params.orig_q)#else$!esc.html($request.params.q)#end"/>
+
+  <div id="context_links"></div>
+</form>
+
+
+  <div id="results" valign="top"></div>
+</body>
+</html>

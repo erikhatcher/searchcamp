@@ -1,0 +1,5 @@
+<ul>
+#foreach($doc in $response.results)
+  <li>$esc.html($doc.name)</li>
+#end
+</ul>

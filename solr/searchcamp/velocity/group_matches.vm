@@ -1,0 +1,58 @@
+#set($resp=$response.response)
+
+<pre style="white-space: pre-wrap;">
+  Solr QTime: ${response.responseHeader.QTime}ms / <span id="fusion_qtime">-</span>
+  q: $!esc.html($request.params.q)
+
+  parsed_query: $resp.debug.parsedquery
+</pre>
+
+#set($collations = $resp.spellcheck.collations.getAll("collation"))
+#if($collations.size() > 0)
+  <br/>Did you mean
+  #foreach($collation in $collations)
+    <a href="#{url_for_hub}?q=$esc.url($collation.collationQuery)">$esc.html($collation.collationQuery) ($collation.hits)</a>?
+  #end
+#end
+
+
+#if($resp.grouped)
+  <h3>$resp.grouped.type.matches total typeahead matches</h3>
+
+<div id="hover" style="
+    display: inline-block;
+    position: fixed;
+    float: right;
+    bottom: 0;
+    right: 0;
+    width: 50%;
+    margin: auto;
+    border: solid;
+    font-size: 75%;
+    background: #DDD0DD">
+</div>
+
+
+
+  #foreach ($group in $resp.grouped.type.groups)
+    <b><a href="#{url_for_browse}?fq=type:${group.groupValue}#q">$group.groupValue</a> ($group.doclist.numFound)</b>
+     <ul>
+      #foreach($doc in $group.doclist)
+        <li>
+          <span title="$esc.html($doc.id): [ $doc.score ]">
+            #foreach($f in ["title","name_en", "name_edge","name_contains","synonyms","name_no_vowels","name_phonetic_en"])
+              #if($resp.highlighting.get($doc.id).get($f).get(0))
+                #if(!$f.startsWith("title"))$doc.title: #end
+                $resp.highlighting.get($doc.id).get($f).get(0)
+                #if($f != "title") ($f)#end
+                #break
+              #end
+            #end
+
+            ($doc.score)
+          </span>
+        </li>
+      #end
+     </ul>
+  #end
+#end

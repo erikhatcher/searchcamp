@@ -1,0 +1,33 @@
+#macro(url_root)/api/apollo/collections/searchcamp/query-profiles/default#end
+
+#macro(url_for_solr)#{url_root}#end
+#macro(url_for_home)#{url_for_solr}/browse#end
+
+#macro(url_for_hub)#{url_root}/typeahead#end
+#macro(url_for_browse)#{url_for_home}#end
+
+
+#macro(link_to_previous_page)
+  #if($page.current_page_number > 1)
+    #set($prev_start = $page.start - $page.results_per_page)
+    <a class="prev-page" href="#url_for_start($prev_start)">$resource.previous</a>
+  #end
+#end
+
+#macro(link_to_next_page)
+  #if($page.current_page_number < $page.page_count)
+    #set($next_start = $page.start + $page.results_per_page)
+    <a class="next-page" href="#url_for_start($next_start)">$resource.next</a>
+  #end
+#end
+
+#macro(link_to_page $page_number $text)
+  #if($page_number == $page.current_page_number)
+    $text
+  #else
+    #if($page_number <= $page.page_count)
+      #set($page_start = $page_number * $page.results_per_page - $page.results_per_page)
+      <a class="page" href="#url_for_start($page_start)">$text</a>
+    #end
+  #end
+#end

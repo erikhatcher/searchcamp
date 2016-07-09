@@ -1,0 +1,19 @@
+<html>
+<head>
+  #parse("head.vm")
+</head>
+  <body>
+    <div id="head">
+      <a href="#{url_for_hub}">hub</a>
+      <a href="#{url_for_browse}">browse</a>
+    </div>
+
+    <div id="content">
+      $content
+    </div>
+
+    <div id="footer">
+      <hr/>
+    </div>
+  </body>
+</html>

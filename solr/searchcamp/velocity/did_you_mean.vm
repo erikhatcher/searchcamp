@@ -1,0 +1,7 @@
+#set($collations = $response.response.spellcheck.collations.getAll("collation"))
+#if($collations.size() > 0)
+  <br/>Did you mean
+  #foreach($collation in $collations)
+    <a href="#{url_for_hub}?q=$esc.url($collation.collationQuery)">$esc.html($collation.collationQuery)</a> ($collation.hits)?
+  #end
+#end
