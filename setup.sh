@@ -33,8 +33,8 @@ curl -u $FUSION_API_CREDENTIALS -X DELETE ${FUSION_API_BASE}/query-pipelines/sea
 curl -u $FUSION_API_CREDENTIALS -X POST -H 'Content-type: application/json' -d @fusion/searchcamp-default-query-pipeline.json ${FUSION_API_BASE}/query-pipelines
 
 # searchcamp: pull down the default and demo query pipelines; use when making edits through Fusion UI and need to save
-# curl -u $FUSION_API_CREDENTIALS -X GET ${FUSION_API_BASE}/query-pipelines/searchcamp-default > searchcamp-default-query-pipeline.json
-# curl -u $FUSION_API_CREDENTIALS -X GET ${FUSION_API_BASE}/query-pipelines/searchcamp-demo > searchcamp-demo-query-pipeline.json
+# curl -u $FUSION_API_CREDENTIALS -X GET ${FUSION_API_BASE}/query-pipelines/searchcamp-default > fusion/searchcamp-default-query-pipeline.json
+# curl -u $FUSION_API_CREDENTIALS -X GET ${FUSION_API_BASE}/query-pipelines/searchcamp-demo > fusion/searchcamp-demo-query-pipeline.json
 
 # aggregation: enable click aggregation
 curl -u $FUSION_API_CREDENTIALS -X DELETE ${FUSION_API_BASE}/aggegator/aggregations/click

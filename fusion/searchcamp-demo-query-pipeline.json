@@ -1,6 +1,21 @@
 {
   "id" : "searchcamp-demo",
   "stages" : [ {
+    "type" : "set-params",
+    "id" : "zlxgcqavc612oi529",
+    "params" : [ {
+      "key" : "hl",
+      "value" : "on",
+      "policy" : "default"
+    }, {
+      "key" : "hl.fl",
+      "value" : "title",
+      "policy" : "default"
+    } ],
+    "type" : "set-params",
+    "skip" : false,
+    "label" : "set-params"
+  }, {
     "type" : "sub-query",
     "id" : "wr0be29",
     "key" : "aggregation-results",
@@ -55,7 +70,7 @@
     "type" : "adv-boost",
     "id" : "yhvholxr",
     "boostingMethod" : "query-param",
-    "boostingParam" : "boost",
+    "boostingParam" : "bq",
     "key" : "aggregation-rollup",
     "boostFieldName" : "id",
     "scaleRange" : {
@@ -65,17 +80,6 @@
     "type" : "adv-boost",
     "skip" : false,
     "label" : "Signals: Aggregation Boosting"
-  }, {
-    "type" : "set-params",
-    "id" : "lamrt3xr",
-    "params" : [ {
-      "key" : "rules",
-      "value" : "off",
-      "policy" : "default"
-    } ],
-    "type" : "set-params",
-    "skip" : true,
-    "label" : "Rules: off?"
   }, {
     "type" : "set-params",
     "id" : "xplgcik9",
@@ -172,7 +176,10 @@
     "rows" : 10,
     "start" : 0,
     "queryFields" : [ {
-      "field" : "_text_",
+      "field" : "title",
+      "boost" : 10.0
+    }, {
+      "field" : "abstract",
       "boost" : 1.0
     } ],
     "returnFields" : [ ],
@@ -183,24 +190,7 @@
     "type" : "facet",
     "id" : "d5890916-41bc-4fa0-86d3-1cff03f69ef3",
     "fieldFacets" : [ {
-      "field" : "Brand-sort",
-      "minCount" : 1,
-      "missing" : false
-    }, {
-      "field" : "ProductType",
-      "minCount" : 1,
-      "missing" : false
-    }, {
-      "field" : "tx_CategoryName",
-      "minCount" : 1,
-      "missing" : false
-    }, {
-      "field" : "Category-search",
-      "sort" : "index",
-      "minCount" : 1,
-      "missing" : false
-    }, {
-      "field" : "CategoryID",
+      "field" : "type",
       "minCount" : 1,
       "missing" : false
     } ],
