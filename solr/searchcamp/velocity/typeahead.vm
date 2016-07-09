@@ -40,7 +40,7 @@ shardId: ${request.core.coreDescriptor.cloudDescriptor.shardId}
 	      success: function (data) {
 	        var request_time = new Date().getTime() - start_time;
 		    $(div).html(data);
-		    if (profile == 'grouped') { $('#fusion_qtime').html('Full Fusion QTime: ' + request_time); }
+		    if (profile == 'default') { $('#fusion_qtime').html('Full Fusion QTime: ' + request_time); }
 	      }
 	    });
       }

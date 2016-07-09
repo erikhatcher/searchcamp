@@ -405,6 +405,40 @@
   <field name="speakers" type="strings"/>
   <field indexed="true" multiValued="false" name="time_slot" required="false" stored="true" type="string"/>
   <field indexed="true" multiValued="false" name="title" required="false" stored="true" type="text_en"/>
+
+  <field indexed="true" multiValued="false" name="title_contains" stored="true" type="ngram"/>
+  <field indexed="true" multiValued="false" name="title_edge" stored="true" type="edge_ngram"/>
+
+  <copyField dest="title_edge" source="title"/>
+  <copyField dest="title_contains" source="title"/>
+
+  <fieldType class="solr.TextField" name="edge_ngram" stored="false">
+    <analyzer type="index">
+      <tokenizer class="solr.StandardTokenizerFactory"/>
+      <filter class="solr.LowerCaseFilterFactory"/>
+      <filter class="solr.EdgeNGramFilterFactory" maxGramSize="20" minGramSize="1"/>
+    </analyzer>
+    <analyzer type="query">
+      <tokenizer class="solr.KeywordTokenizerFactory"/>
+      <filter class="solr.LowerCaseFilterFactory"/>
+
+    </analyzer>
+  </fieldType>
+
+
+<!-- TODO: fix - whitespace tokenize, then lowercase + ngram filter -->
+<fieldType class="solr.TextField" name="ngram" stored="false">
+     <analyzer type="index">
+       <tokenizer class="solr.NGramTokenizerFactory" maxGramSize="20" minGramSize="2"/>
+       <filter class="solr.LowerCaseFilterFactory"/>
+      </analyzer>
+     <analyzer type="query">
+        <tokenizer class="solr.KeywordTokenizerFactory"/>
+        <filter class="solr.LowerCaseFilterFactory"/>
+     </analyzer>
+</fieldType>
+
+
   <field indexed="true" multiValued="false" name="type" required="false" stored="true" type="string"/>
   <dynamicField indexed="true" name="*_txt_en_split_tight" stored="true" type="text_en_splitting_tight"/>
   <dynamicField indexed="true" name="*_descendent_path" stored="true" type="descendent_path"/>
