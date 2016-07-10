@@ -9,7 +9,23 @@
       "policy" : "default"
     }, {
       "key" : "hl.fl",
-      "value" : "title",
+      "value" : "title,title_en,title_edge,title_contains,abstract",
+      "policy" : "default"
+    }, {
+      "key" : "group.field",
+      "value" : "type",
+      "policy" : "default"
+    }, {
+      "key" : "group.limit",
+      "value" : "10",
+      "policy" : "default"
+    }, {
+      "key" : "group.sort",
+      "value" : "score desc",
+      "policy" : "default"
+    }, {
+      "key" : "fl",
+      "value" : "*,score",
       "policy" : "default"
     } ],
     "type" : "set-params",
@@ -25,7 +41,16 @@
       "boost" : 10.0
     }, {
       "field" : "abstract",
+      "boost" : 2.0
+    }, {
+      "field" : "title_edge",
+      "boost" : 3.0
+    }, {
+      "field" : "title_contains",
       "boost" : 1.0
+    }, {
+      "field" : "title_en",
+      "boost" : 8.0
     } ],
     "returnFields" : [ ],
     "type" : "search-fields",
@@ -45,7 +70,7 @@
   }, {
     "type" : "solr-query",
     "id" : "f38c6194-e031-41c9-b3e8-3be2067773f2",
-    "allowedRequestHandlers" : [ "typeahead" ],
+    "allowedRequestHandlers" : [ "typeahead", "browse" ],
     "httpMethod" : "POST",
     "allowFederatedSearch" : false,
     "type" : "solr-query",
