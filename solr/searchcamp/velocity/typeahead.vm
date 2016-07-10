@@ -53,7 +53,7 @@ shardId: ${request.core.coreDescriptor.cloudDescriptor.shardId}
         $('#context_links').html(
                  // /panels/searchcamp?sp1=(perPage:10,q:canon)&qp1=searchcamp-default&panels=!((component:(data:(),excludeFromHistory:!f,type:sui),history:!(),properties:(displayTitle:Search),puid:%27235307977289.58847%27))
           '<a href="/panels/searchcamp?sp1=(perPage:10,q:%27' + encodeURI(q) + '%27)&qp1=searchcamp-default&panels=!((component:(data:(),excludeFromHistory:!f,type:sui),history:!(),properties:(displayTitle:Search),puid:%27235307977289.58847%27))">fusion</a> ' +
-          '<a href="' + fusion_url('/browse',q,'','grouped') + '">browse</a> ' +
+          '<a href="' + fusion_url('/browse',q,'','default') + '">browse</a> ' +
           '<a href="' + fusion_url('/select',q,'&wt=json&indent=on','default') + '">json</a> ' +
           '<a href="' + fusion_url('/select',q,'&wt=xml','default') + '">xml</a> '
         );
@@ -65,28 +65,6 @@ shardId: ${request.core.coreDescriptor.cloudDescriptor.shardId}
       $(function() { $('#preprocess_query').bind("change",load_fusion_results); });
 
       $(function() { load_fusion_results(); });
-
-      function showHoverResults(type,catid,manid,name) {
-        var fq = '';
-        if (type=='brand') {
-          fq = '&fq=manufacturer_id:' + encodeURI(manid);
-        }
-        if (type=='category') {
-          fq = '&fq=category_id:' + encodeURI(catid)
-        }
-
-        var q = name; // default to the querying ignoring the user query and using the suggested value, user query will come into the boost
-        var user_q = $('\#q').val();  ## hash in hash-q escaped for velocity rendering (there's a macro for hash-q in techproducts macros)
-        var bq = '';
-        if (fq != '') {
-          // when a suggestion is really a filter, use the users query for the main query
-   	      q = user_q;
-        } else {
-          bq = "&bq=(" + encodeURI(user_q) + ")";
-        }
-
-        make_fusion_request('#hover', q, "&wt=velocity&v.template=results_list&v.layout=hover_layout&v.layout.enabled=true&fq=type:item&mm=50%25" + fq + bq, 'default');
-      }
 
     </script>
 
