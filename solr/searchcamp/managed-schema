@@ -404,11 +404,13 @@
   <field indexed="true" multiValued="false" name="id" required="true" stored="true" type="string"/>
   <field name="speakers" type="strings"/>
   <field indexed="true" multiValued="false" name="time_slot" required="false" stored="true" type="string"/>
-  <field indexed="true" multiValued="false" name="title" required="false" stored="true" type="text_en"/>
+  <field indexed="true" multiValued="false" name="title" required="false" stored="true" type="text_general"/>
+  <field indexed="true" multiValued="false" name="title_en" required="false" stored="true" type="text_en"/>
 
   <field indexed="true" multiValued="false" name="title_contains" stored="true" type="ngram"/>
   <field indexed="true" multiValued="false" name="title_edge" stored="true" type="edge_ngram"/>
 
+  <copyField dest="title_en" source="title"/>
   <copyField dest="title_edge" source="title"/>
   <copyField dest="title_contains" source="title"/>
 
