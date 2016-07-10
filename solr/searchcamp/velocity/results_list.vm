@@ -1,5 +1,15 @@
+#set($resp=$response.response)
+
 <ul>
 #foreach($doc in $response.results)
-  <li>$esc.html($doc.name)</li>
+  <li><span title="$esc.html($doc.id): [ $doc.score ]"> ($doc.score)
+    #foreach($f in ["title","title_edge","title_contains"])
+      #if($resp.highlighting.get($doc.id).get($f).get(0))
+        $resp.highlighting.get($doc.id).get($f).get(0)
+        #if($f != "title") ($f)#end
+        #break
+      #end
+    #end
+  </span></li>
 #end
 </ul>
