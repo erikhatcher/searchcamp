@@ -11,7 +11,7 @@
 #if($collations.size() > 0)
   <br/>Did you mean
   #foreach($collation in $collations)
-    <a href="#{url_for_hub}?q=$esc.url($collation.collationQuery)">$esc.html($collation.collationQuery) ($collation.hits)</a>?
+    <a href="#{url_for_typeahead}?q=$esc.url($collation.collationQuery)">$esc.html($collation.collationQuery) ($collation.hits)</a>?
   #end
 #end
 

@@ -3,7 +3,7 @@
 #macro(url_for_solr)#{url_root}#end
 #macro(url_for_home)#{url_for_solr}/browse#end
 
-#macro(url_for_hub)#{url_root}/typeahead#end
+#macro(url_for_typeahead)#{url_root}/typeahead#end
 #macro(url_for_browse)#{url_for_home}#end
 
 

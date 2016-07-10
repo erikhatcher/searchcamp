@@ -4,7 +4,7 @@
 </head>
   <body>
     <div id="head">
-      <a href="#{url_for_hub}">hub</a>
+      <a href="#{url_for_typeahead}">typeahead</a>
       <a href="#{url_for_browse}">browse</a>
     </div>
 
