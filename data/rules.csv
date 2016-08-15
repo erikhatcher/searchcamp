@@ -1,0 +1,3 @@
+id,type,display_type,keys,values,param_keys,param_values,param_policies,search_terms
+b1,response_value,Banner,banner,Welcome to searchcamp!,,,,
+r1,response_value,Redirect,redirect,http://lucene.apache.org/solr,,,,solr
