@@ -31,8 +31,6 @@ curl -u $FUSION_API_CREDENTIALS -X POST -H 'Content-type: application/json' -d @
 curl -u $FUSION_API_CREDENTIALS -X DELETE ${FUSION_API_BASE}/query-pipelines/searchcamp-default
 curl -u $FUSION_API_CREDENTIALS -X POST -H 'Content-type: application/json' -d @fusion/searchcamp-default-query-pipeline.json ${FUSION_API_BASE}/query-pipelines
 
-# searchcamp: pull down the default and demo query pipelines; use when making edits through Fusion UI and need to save
-
 # searchcamp: set up "demo" query profile
 curl -u $FUSION_API_CREDENTIALS -X PUT -H 'Content-type: application/json' -d '"searchcamp-demo"' ${FUSION_API_BASE}/collections/searchcamp/query-profiles/demo
 
